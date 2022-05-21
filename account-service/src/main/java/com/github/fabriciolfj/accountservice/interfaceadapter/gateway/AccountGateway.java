@@ -1,0 +1,45 @@
+package com.github.fabriciolfj.accountservice.interfaceadapter.gateway;
+
+import com.github.fabriciolfj.accountservice.business.FindAccount;
+import com.github.fabriciolfj.accountservice.business.SaveAccount;
+import com.github.fabriciolfj.accountservice.domain.Account;
+import com.github.fabriciolfj.accountservice.domain.exceptions.AccountNotFoundException;
+import com.github.fabriciolfj.accountservice.interfaceadapter.repository.account.AccountRepository;
+import com.github.fabriciolfj.accountservice.interfaceadapter.repository.mapper.AccountEntityMapper;
+import com.github.fabriciolfj.accountservice.interfaceadapter.repository.mapper.ExtractEntityMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class AccountGateway implements SaveAccount, FindAccount {
+
+    private final AccountRepository accountRepository;
+    private final ExtractGateway extractGateway;
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Mono<Account> save(final Account account) {
+        return Mono.just(account)
+                .map(AccountEntityMapper::toEntity)
+                .flatMap(accountRepository::save)
+                .map(c -> ExtractEntityMapper.toEntity(account.findFirst()))
+                .flatMap(extractEntity -> extractGateway.save(extractEntity))
+                .flatMap(result -> {
+                    log.info("Save extract to account: {}-{}", result.getId(), account.getCode());
+                    return Mono.just(account);
+                });
+    }
+
+    @Override
+    public Mono<Account> findAccountByCPF(final String cpf) {
+        return accountRepository.findByCpf(cpf)
+                .map(AccountEntityMapper::toDomain)
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new AccountNotFoundException("Account not found to cpf " + cpf))))
+                .log();
+    }
+}
