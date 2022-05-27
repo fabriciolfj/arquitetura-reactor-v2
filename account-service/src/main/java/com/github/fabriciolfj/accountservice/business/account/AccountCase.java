@@ -27,4 +27,8 @@ public class AccountCase {
                 .flatMap(linkProduct::linkProduct)
                 .flatMap(c -> saveAccount.save(c));
     }
+
+    public Mono<Account> find(final Mono<String> monoCpf) {
+        return monoCpf.flatMap(c -> findAccount.findAccountByCPF(c));
+    }
 }
