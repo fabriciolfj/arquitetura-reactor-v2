@@ -34,7 +34,6 @@ public class AccountGateway implements SaveAccount, FindAccount {
                     return Mono.just(account);
                 });
     }
-
     @Override
     public Mono<Account> findAccountByCPF(final String cpf) {
         return accountRepository.findByCpf(cpf)

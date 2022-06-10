@@ -21,7 +21,7 @@ public class ProductProvider {
     @Autowired
     private WebClient webClient;
 
-    @Value("${app.url}")
+    @Value("${app.product}")
     private String url;
 
     public Mono<GetProductResponse> find(final BigDecimal value, final String customer) {

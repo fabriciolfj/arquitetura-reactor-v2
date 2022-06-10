@@ -16,7 +16,6 @@ public class AccountCase {
     private final SaveAccount saveAccount;
     private final LinkProduct linkProduct;
     private final FindAccount findAccount;
-
     public Mono<Account> execute(final Mono<Account> account) {
         return account
                 .map(Account::genereteCode)
