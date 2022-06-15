@@ -6,6 +6,8 @@ import com.github.fabriciolfj.engineruleservice.entities.RuleRate;
 import com.github.fabriciolfj.engineruleservice.exceptions.BusinessRateNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +15,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@Qualifier("validationRateValue")
 public class ValidationRateValue implements ValidationRate {
 
-    private final ValidationRateScore validationRateScore;
+    @Qualifier("validationRateScore")
+    @Autowired
+    private ValidationRate validationRateScore;
 
     @Override
     public RuleRate execute(final List<RuleRate> rules, final RuleRateCommand command) {
