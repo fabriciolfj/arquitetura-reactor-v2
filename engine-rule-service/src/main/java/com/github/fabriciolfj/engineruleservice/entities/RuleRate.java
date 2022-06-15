@@ -1,10 +1,11 @@
 package com.github.fabriciolfj.engineruleservice.entities;
 
-import org.apache.tomcat.jni.Local;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Builder
 public record RuleRate(
         LocalDate dateMinimum,
         LocalDate dateMaximum,

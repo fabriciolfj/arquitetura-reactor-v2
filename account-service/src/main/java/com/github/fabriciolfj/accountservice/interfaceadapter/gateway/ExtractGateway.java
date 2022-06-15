@@ -22,8 +22,8 @@ public class ExtractGateway  implements FindExtract, SaveExtract {
     }
 
     @Override
-    public Mono<Extract> findLast(final Mono<String> account) {
-        return account
+    public Mono<Extract> findLast(final String account) {
+        return Mono.just(account)
                 .flatMap(c -> extractRepository.findFirstByContaOrderByDateExtratoDesc(c))
                 .map(ExtractEntityMapper::toDomain);
     }

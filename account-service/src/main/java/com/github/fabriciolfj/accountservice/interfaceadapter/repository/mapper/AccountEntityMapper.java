@@ -1,7 +1,12 @@
 package com.github.fabriciolfj.accountservice.interfaceadapter.repository.mapper;
 
 import com.github.fabriciolfj.accountservice.domain.Account;
+import com.github.fabriciolfj.accountservice.domain.Extract;
 import com.github.fabriciolfj.accountservice.interfaceadapter.repository.account.AccountEntity;
+
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 
 public class AccountEntityMapper {
 
@@ -9,11 +14,21 @@ public class AccountEntityMapper {
 
     }
 
-    public static final Account toDomain(final AccountEntity entity) {
+    public static Account toDomain(final AccountEntity entity, final Extract extract) {
         return Account.builder()
-                .code(entity.getCode())
-                .cpf(entity.getCpf())
+                .balanceInit(extract.getBalance())
                 .product(entity.getProduct())
+                .cpf(entity.getCpf())
+                .extracts(List.of(extract))
+                .build();
+    }
+
+    public static Account toDomain(final AccountEntity entity) {
+        return Account.builder()
+                .balanceInit(BigDecimal.ZERO)
+                .product(entity.getProduct())
+                .cpf(entity.getCpf())
+                .extracts(Collections.emptyList())
                 .build();
     }
 

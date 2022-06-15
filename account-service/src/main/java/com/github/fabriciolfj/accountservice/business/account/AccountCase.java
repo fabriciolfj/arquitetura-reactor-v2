@@ -1,6 +1,5 @@
 package com.github.fabriciolfj.accountservice.business.account;
 
-import com.github.fabriciolfj.accountservice.business.FindAccount;
 import com.github.fabriciolfj.accountservice.business.LinkProduct;
 import com.github.fabriciolfj.accountservice.business.SaveAccount;
 import com.github.fabriciolfj.accountservice.domain.Account;
@@ -15,7 +14,7 @@ public class AccountCase {
 
     private final SaveAccount saveAccount;
     private final LinkProduct linkProduct;
-    private final FindAccount findAccount;
+
     public Mono<Account> execute(final Mono<Account> account) {
         return account
                 .map(Account::genereteCode)
@@ -25,9 +24,5 @@ public class AccountCase {
                 })
                 .flatMap(linkProduct::linkProduct)
                 .flatMap(c -> saveAccount.save(c));
-    }
-
-    public Mono<Account> find(final Mono<String> monoCpf) {
-        return monoCpf.flatMap(c -> findAccount.findAccountByCPF(c));
     }
 }
