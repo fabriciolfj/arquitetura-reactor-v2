@@ -6,3 +6,4 @@
  - montar microservice para operações utilizando mutiny
 - todo: montar cluster kubernetes local, via terraform
 - gitops para entrega das apps, junto ao argocd
+- utilizar o redisson dentro de account para cache em relação ao rules
