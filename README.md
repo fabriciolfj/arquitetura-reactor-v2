@@ -9,3 +9,6 @@
 - gitops para entrega das apps, junto ao argocd
 - utilizar o redisson dentro de account para cache em relação ao rules
 - utilizar redis reactive com mutiny no operation service
+- instalar o kafka
+````
+helm install kafka bitnami/kafka --set replicaCount=2 --set numPartitions=9
