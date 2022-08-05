@@ -12,7 +12,7 @@
 - instalar o kafka
 ````
 helm install kafka bitnami/kafka --set replicaCount=2 --set numPartitions=9
-
+````
 
 ## Spring cloud stream
 - ponto importante, caso tenha mais de um consumer, devemos definir nossas functions, conforme abaixo:
